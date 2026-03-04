@@ -1,0 +1,4 @@
+# Swarmforge runtime files — do not commit
+.deploy_key
+claude_mcp.json
+AGENT_PROMPT.md
