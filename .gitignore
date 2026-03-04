@@ -2,3 +2,6 @@
 .deploy_key
 claude_mcp.json
 AGENT_PROMPT.md
+
+# Dependencies
+node_modules/
