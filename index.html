@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Red & Green Split</title>
+  <title>Red and Green Split</title>
   <style>
     * {
       margin: 0;
@@ -13,24 +13,38 @@
 
     body {
       height: 100vh;
-      display: flex;
       overflow: hidden;
     }
 
-    #left {
+    .container {
+      display: flex;
+      height: 100vh;
+      position: relative;
+    }
+
+    .panel {
       flex: 1;
+      transition: background-color 0.3s ease;
+    }
+
+    .panel-left {
       background-color: red;
-      transition: background-color 0.3s ease;
     }
 
-    #right {
-      flex: 1;
+    .panel-right {
       background-color: green;
-      transition: background-color 0.3s ease;
     }
 
-    #toggle-btn {
-      position: fixed;
+    .container.swapped .panel-left {
+      background-color: green;
+    }
+
+    .container.swapped .panel-right {
+      background-color: red;
+    }
+
+    .btn-toggle {
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -46,37 +60,28 @@
       transition: box-shadow 0.2s ease;
     }
 
-    #toggle-btn:hover {
+    .btn-toggle:hover {
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
     }
 
-    #toggle-btn:active {
+    .btn-toggle:active {
       transform: translate(-50%, -50%) scale(0.97);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
   </style>
 </head>
 <body>
-  <div id="left"></div>
-  <div id="right"></div>
-  <button id="toggle-btn">Switch Colors</button>
+  <div class="container" id="container">
+    <div class="panel panel-left" id="panel-left"></div>
+    <div class="panel panel-right" id="panel-right"></div>
+    <button class="btn-toggle" id="btn-toggle" onclick="toggleColors()">Switch Colors</button>
+  </div>
 
   <script>
-    const left = document.getElementById('left');
-    const right = document.getElementById('right');
-    const btn = document.getElementById('toggle-btn');
-
-    let toggled = false;
-
-    btn.addEventListener('click', function () {
-      toggled = !toggled;
-      if (toggled) {
-        left.style.backgroundColor = 'green';
-        right.style.backgroundColor = 'red';
-      } else {
-        left.style.backgroundColor = 'red';
-        right.style.backgroundColor = 'green';
-      }
-    });
+    function toggleColors() {
+      const container = document.getElementById('container');
+      container.classList.toggle('swapped');
+    }
   </script>
 </body>
 </html>
