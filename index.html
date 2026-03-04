@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Red & Green Split</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    #left {
+      flex: 1;
+      background-color: red;
+      transition: background-color 0.3s ease;
+    }
+
+    #right {
+      flex: 1;
+      background-color: green;
+      transition: background-color 0.3s ease;
+    }
+
+    #toggle-btn {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: white;
+      border: 3px solid #333;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: box-shadow 0.2s ease;
+    }
+
+    #toggle-btn:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    }
+
+    #toggle-btn:active {
+      transform: translate(-50%, -50%) scale(0.97);
+    }
+  </style>
+</head>
+<body>
+  <div id="left"></div>
+  <div id="right"></div>
+  <button id="toggle-btn">Switch Colors</button>
+
+  <script>
+    const left = document.getElementById('left');
+    const right = document.getElementById('right');
+    const btn = document.getElementById('toggle-btn');
+
+    let toggled = false;
+
+    btn.addEventListener('click', function () {
+      toggled = !toggled;
+      if (toggled) {
+        left.style.backgroundColor = 'green';
+        right.style.backgroundColor = 'red';
+      } else {
+        left.style.backgroundColor = 'red';
+        right.style.backgroundColor = 'green';
+      }
+    });
+  </script>
+</body>
+</html>
