@@ -1,0 +1,11 @@
+{
+  "name": "red-and-green-split",
+  "version": "1.0.0",
+  "description": "A two-panel color-switch web page",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.0"
+  }
+}
