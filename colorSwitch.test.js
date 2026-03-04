@@ -1,77 +1,70 @@
 /**
  * Unit tests for the color-switch button functionality.
+ * Tests the class-based toggling logic from index.html.
  *
  * @jest-environment jsdom
  */
 
-// Set up the DOM structure that matches index.html
+const fs = require('fs');
+const path = require('path');
+
 function setupDOM() {
-  document.body.innerHTML = `
-    <div id="left" style="background-color: red;"></div>
-    <div id="right" style="background-color: green;"></div>
-    <button id="toggle-btn">Switch Colors</button>
-  `;
+  const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8');
+  document.documentElement.innerHTML = html;
 
-  // Replicate the toggle logic from index.html
-  const left = document.getElementById('left');
-  const right = document.getElementById('right');
-  const btn = document.getElementById('toggle-btn');
-
-  let toggled = false;
-
-  btn.addEventListener('click', function () {
-    toggled = !toggled;
-    if (toggled) {
-      left.style.backgroundColor = 'green';
-      right.style.backgroundColor = 'red';
-    } else {
-      left.style.backgroundColor = 'red';
-      right.style.backgroundColor = 'green';
-    }
-  });
+  // Define toggleColors globally as the HTML calls it via onclick
+  global.toggleColors = function () {
+    const container = document.getElementById('container');
+    container.classList.toggle('swapped');
+  };
 }
 
 beforeEach(() => {
   setupDOM();
 });
 
-function getLeft() { return document.getElementById('left'); }
-function getRight() { return document.getElementById('right'); }
-function getBtn() { return document.getElementById('toggle-btn'); }
+function getContainer() { return document.getElementById('container'); }
+function getBtn() { return document.getElementById('btn-toggle'); }
 
 describe('Initial state', () => {
-  test('left side has red background', () => {
-    expect(getLeft().style.backgroundColor).toBe('red');
+  test('container does not have "swapped" class', () => {
+    expect(getContainer().classList.contains('swapped')).toBe(false);
   });
 
-  test('right side has green background', () => {
-    expect(getRight().style.backgroundColor).toBe('green');
+  test('left panel has class "panel-left"', () => {
+    expect(document.getElementById('panel-left').classList.contains('panel-left')).toBe(true);
+  });
+
+  test('right panel has class "panel-right"', () => {
+    expect(document.getElementById('panel-right').classList.contains('panel-right')).toBe(true);
   });
 });
 
 describe('After one click', () => {
-  beforeEach(() => getBtn().click());
+  beforeEach(() => global.toggleColors());
 
-  test('left side switches to green', () => {
-    expect(getLeft().style.backgroundColor).toBe('green');
-  });
-
-  test('right side switches to red', () => {
-    expect(getRight().style.backgroundColor).toBe('red');
+  test('container has "swapped" class', () => {
+    expect(getContainer().classList.contains('swapped')).toBe(true);
   });
 });
 
 describe('After two clicks (back to original)', () => {
   beforeEach(() => {
-    getBtn().click();
-    getBtn().click();
+    global.toggleColors();
+    global.toggleColors();
   });
 
-  test('left side returns to red', () => {
-    expect(getLeft().style.backgroundColor).toBe('red');
+  test('container does not have "swapped" class', () => {
+    expect(getContainer().classList.contains('swapped')).toBe(false);
   });
+});
 
-  test('right side returns to green', () => {
-    expect(getRight().style.backgroundColor).toBe('green');
+describe('Toggle works repeatedly', () => {
+  test('odd clicks result in swapped state, even clicks in original', () => {
+    const container = getContainer();
+    for (let i = 1; i <= 6; i++) {
+      global.toggleColors();
+      expect(container.classList.contains('swapped')).toBe(i % 2 === 1);
+    }
   });
 });
